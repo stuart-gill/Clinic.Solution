@@ -6,34 +6,31 @@ namespace Clinic.Controllers
 {
     public class DoctorsController : Controller
     {
-        [HttpGet("/")]
+        [HttpGet("/doctors")]
         public ActionResult Index()
         {
             List<Doctor> allDoctors = Doctor.GetAll();
             return View(allDoctors);
         }
 
-        [HttpGet("/doctors/new")]
-        public ActionResult New()
-        {
-            return View();
-        }
+
 
         [HttpPost("/doctors")]
-        public ActionResult Create(string doctorName)
+        public ActionResult Create(string doctorName, int specialtyId)
         {
             Doctor newDoctor = new Doctor(doctorName);
             newDoctor.Save();
-            RedirectToAction("Index");
+            newDoctor.AddToJoinTable(specialtyId);
+            return RedirectToAction("Index");
         }
 
-        [HttpGet ("/doctors/{id}")]
+        [HttpGet ("/doctors/{doctorId}")]
         public ActionResult Show(int doctorId)
         {
             Dictionary<string, object> model = new Dictionary<string, object>();
             Doctor selectedDoctor = Doctor.Find(doctorId);
-            List<Patient> doctorPatients = selectedDoctor.GetPatients();
-            List<Specialty> doctorSpecialties = selectedDoctor.GetSpecialties();
+            List<Patient> doctorPatients = Doctor.GetPatients(doctorId);
+            List<Specialty> doctorSpecialties = Doctor.GetSpecialties(doctorId);
             model.Add("doctor", selectedDoctor);
             model.Add("doctorPatients", doctorPatients);
             model.Add("doctorSpecialties", doctorSpecialties);

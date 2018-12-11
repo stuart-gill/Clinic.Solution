@@ -104,6 +104,25 @@ namespace Clinic.Models
             }
         }
 
+        public void AddToJoinTable(int specialtyId)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"INSERT INTO doctors_specialties (doctor_id, specialty_id) VALUES (@doctorId, @specialtyId);";
+            cmd.Parameters.AddWithValue("@doctorId", this._id);
+            cmd.Parameters.AddWithValue("@specialtyId", specialtyId);
+
+            cmd.ExecuteNonQuery();
+            _id = (int) cmd.LastInsertedId;
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+        
+
         public static List<Doctor> GetAll()
         {
             List<Doctor> allDoctors = new List<Doctor>{};
@@ -126,6 +145,30 @@ namespace Clinic.Models
                 conn.Dispose();
             }
             return allDoctors;
+        }
+        public static Doctor Find(int doctorId)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM doctors WHERE id = @doctorId;";
+            cmd.Parameters.AddWithValue("@doctorId", doctorId);
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            int id = 0;
+            string name = "";
+            while(rdr.Read())
+            {
+                id = rdr.GetInt32(0);
+                name = rdr.GetString(1);
+            }
+            Doctor newDoctor = new Doctor(name, id);
+            newDoctor.SetId(id);
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return newDoctor;
         }
 
         public static void ClearAll()

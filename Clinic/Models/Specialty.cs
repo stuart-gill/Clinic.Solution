@@ -51,7 +51,7 @@ namespace Clinic.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM specialtys;";
+            cmd.CommandText = @"SELECT * FROM specialties;";
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
             while(rdr.Read())
             {
@@ -82,6 +82,59 @@ namespace Clinic.Models
                 conn.Dispose();
             }            
         }
+
+        public static Specialty Find(int specialtyId)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM specialties WHERE id = @SpecialtyId;";
+            cmd.Parameters.AddWithValue("@SpecialtyId", specialtyId);
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            int id = 0;
+            string name = "";
+            while(rdr.Read())
+            {
+                id = rdr.GetInt32(0);
+                name = rdr.GetString(1);
+            }
+            Specialty newSpecialty = new Specialty(name, id);
+            newSpecialty.SetId(id);
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return newSpecialty;
+        }
+
+        public static List<Doctor> GetDoctors(int id)
+        {
+            List<Doctor> specialtyDoctors = new List<Doctor>{};
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT doctors.* FROM specialties
+                JOIN doctors_specialties on (specialties.id = doctors_specialties.specialty_id)
+                JOIN doctors ON (doctors_specialties.doctor_id = doctors.id)
+                WHERE specialties.id = @SpecialtyId;";
+            cmd.Parameters.AddWithValue("@SpecialtyId", id);
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while(rdr.Read())
+            {
+                int doctorId = rdr.GetInt32(0);
+                string doctorName = rdr.GetString(1);
+                Doctor newDoctor = new Doctor(doctorName, doctorId);
+                specialtyDoctors.Add(newDoctor);
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return specialtyDoctors;
+        }
+
         
     }
 }

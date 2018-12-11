@@ -9,5 +9,15 @@ namespace Clinic.Tests
     [TestClass]
     public class HomeControllerTest
     {
+        [TestMethod]
+        public void Stylist_ReturnsCorrect_View()
+        {
+            HomeController testController = new HomeController();
+
+            ActionResult indexView = testController.Index();
+
+            Assert.IsInstanceOfType(indexView, typeof(ViewResult));
+        }
     }
 }
+
