@@ -73,8 +73,8 @@ namespace Clinic.Models
             {
                 int patientId = rdr.GetInt32(0);
                 string patientName = rdr.GetString(1);
-                string patientBirthday = rdr.GetDateTime(2).ToString("MM/dd/yyyy");
-                Patient newPatient = new Patient(patientName, patientBirthday, patientId);
+                DateTime patientBirthday = rdr.GetDateTime(2);
+                Patient newPatient = new Patient(patientName, patientBirthday.ToString("MM/dd/yyyy"), patientId);
                 doctorsPatients.Add(newPatient);
             }
             conn.Close();

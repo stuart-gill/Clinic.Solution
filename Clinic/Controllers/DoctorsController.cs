@@ -46,10 +46,10 @@ namespace Clinic.Controllers
         }
 
         //post the new patient within a certain doctor and return to view of that doctor
-        [HttpPost("/specialties/{doctorId}")]
-        public ActionResult CreateDoctorInSpecialty(string patientName, string patientBirthday, int doctorId)
+        [HttpPost("/doctors/{doctorId}")]
+        public ActionResult CreateDoctorInSpecialty(string patientName, string birthday, int doctorId)
         {
-            Patient newPatient = new Patient(patientName, patientBirthday);
+            Patient newPatient = new Patient(patientName, birthday);
             newPatient.Save();
             newPatient.AddToJoinTable(doctorId);
             Dictionary<string, object> model = new Dictionary<string, object>();

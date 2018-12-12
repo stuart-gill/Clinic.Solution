@@ -36,7 +36,7 @@ namespace Clinic.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO patient (name, birthday) VALUES (@name, @birthday);";
+            cmd.CommandText = @"INSERT INTO patients (name, birthday) VALUES (@name, @birthday);";
             cmd.Parameters.AddWithValue("@name", this._name);
             cmd.Parameters.AddWithValue("@birthday", this._birthday);
             cmd.ExecuteNonQuery();
