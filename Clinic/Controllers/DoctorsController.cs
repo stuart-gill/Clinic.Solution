@@ -37,14 +37,7 @@ namespace Clinic.Controllers
             return View(model);
         }
 
-        [HttpPost ("/doctors/{doctorId}")]
-        public ActionResult ShowPatients(int doctorId, string patientName, string birthday)
-        {
-            Patient newPatient = new Patient(patientName, birthday);
-            newPatient.Save();
-            return RedirectToAction("Show");
-        }
-
+        //create a new patient within a certain doctor
         [HttpGet("/doctors/{doctorId}/patients/new")]
         public ActionResult NewPatient(int doctorId)
         {
@@ -52,7 +45,22 @@ namespace Clinic.Controllers
             return View(thisDoctor);
         }
 
-        
+        //post the new patient within a certain doctor and return to view of that doctor
+        [HttpPost("/specialties/{doctorId}")]
+        public ActionResult CreateDoctorInSpecialty(string patientName, string patientBirthday, int doctorId)
+        {
+            Patient newPatient = new Patient(patientName, patientBirthday);
+            newPatient.Save();
+            newPatient.AddToJoinTable(doctorId);
+            Dictionary<string, object> model = new Dictionary<string, object>();
+            Doctor selectedDoctor = Doctor.Find(doctorId);
+            List<Patient> doctorPatients = Doctor.GetPatients(doctorId);
+            model.Add("doctor", selectedDoctor);
+            model.Add("doctorPatients", doctorPatients);
+            return View("Show", model);
+        }
+
+
 
     }
 }
