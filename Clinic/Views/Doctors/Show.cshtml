@@ -9,7 +9,7 @@
 <ul>
 @foreach (var specialty in @Model["doctorSpecialties"])
 {
-    <li>@specialty.GetName()</li>
+    <li><a href="/specialties/@specialty.GetId()">@specialty.GetName()</a></li>
 }
 </ul>
 <h2>Patients List</h2>

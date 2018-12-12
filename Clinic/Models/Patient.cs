@@ -86,6 +86,25 @@ namespace Clinic.Models
                 conn.Dispose();
             }            
         }
+
+        public void AddToJoinTable(int doctorId)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"INSERT INTO doctors_patients (doctor_id, patient_id) VALUES (@doctorId, @patientId);";
+            cmd.Parameters.AddWithValue("@patientId", this._id);
+            cmd.Parameters.AddWithValue("@doctorId", doctorId);
+
+            cmd.ExecuteNonQuery();
+            _id = (int) cmd.LastInsertedId;
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+        
         
     }
 }

@@ -36,5 +36,23 @@ namespace Clinic.Controllers
             model.Add("doctorSpecialties", doctorSpecialties);
             return View(model);
         }
+
+        [HttpPost ("/doctors/{doctorId}")]
+        public ActionResult ShowPatients(int doctorId, string patientName, string birthday)
+        {
+            Patient newPatient = new Patient(patientName, birthday);
+            newPatient.Save();
+            return RedirectToAction("Show");
+        }
+
+        [HttpGet("/doctors/{doctorId}/patients/new")]
+        public ActionResult NewPatient(int doctorId)
+        {
+            Doctor thisDoctor = Doctor.Find(doctorId);
+            return View(thisDoctor);
+        }
+
+        
+
     }
 }

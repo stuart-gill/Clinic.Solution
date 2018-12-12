@@ -18,7 +18,7 @@ _A C# application that is connected to a SQL database with tables for Doctors, S
 * _USE clinic;_
 * _CREATE TABLE doctors (id serial PRIMARY KEY, name VARCHAR(255));_
 * _CREATE TABLE specialties (id serial PRIMARY KEY, name VARCHAR(255));_
-* _CREATE TABLE doctors\_specialties (id serial PRIMARY KEY, doctor_id INT, specialty_id INT);_
+* _CREATE TABLE doctors_specialties (id serial PRIMARY KEY, doctor_id INT, specialty_id INT);_
 * _To run the program, first navigate to the location of the Clinic file then run dotnet restore, dotnet build, and dotnet run._
 * _When program is running open a web browser and go to localhost:5000 to view program._
 * _To run the tests navigate to the Clinic.Tests folder and use these commands: $ dotnet restore and dotnet test._ 
@@ -37,7 +37,8 @@ _A C# application that is connected to a SQL database with tables for Doctors, S
 * _MSTests_
 * _MVC_
 * _Razor_
-* _Mono_
+* _SQL_
+* _MAMP_
 
 ### License
 

@@ -45,5 +45,20 @@ namespace Clinic.Controllers
             Specialty thisSpecialty = Specialty.Find(specialtyId);
             return View(thisSpecialty);
         }
+
+        //post the new doctor within a certain specialty and return to view of that specialty
+        [HttpPost("/specialties/{specialtyId}")]
+        public ActionResult CreateDoctorInSpecialty(string doctorName, int specialtyId)
+        {
+            Doctor newDoctor = new Doctor(doctorName);
+            newDoctor.Save();
+            newDoctor.AddToJoinTable(specialtyId);
+            Dictionary<string, object> model = new Dictionary<string, object>();
+            Specialty selectedSpecialty = Specialty.Find(specialtyId);
+            List<Doctor> specialtyDoctors = Specialty.GetDoctors(specialtyId);
+            model.Add("specialty", selectedSpecialty);
+            model.Add("specialtyDoctors", specialtyDoctors);
+            return View("Show", model);
+        }
     }
 }

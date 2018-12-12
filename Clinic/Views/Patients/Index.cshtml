@@ -1,0 +1,18 @@
+@using Clinic.Models;
+@{
+  Layout = "_Layout";
+}
+<h1>All Specialties</h2>
+<ul>
+@foreach(var specialty in @Model)
+{
+    <li><a href="/specialties/@specialty.GetId()">@specialty.GetName()</a></li>
+}
+
+</ul>
+<div class="container">
+<h2>Clinic homepage</h2>
+<h3><a href="/specialties/new">Create new Specialty</a></h3>
+<h3><a href="/">Home</a></h3>
+
+</div>
